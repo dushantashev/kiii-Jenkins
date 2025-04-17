@@ -1,10 +1,17 @@
 pipeline {
+<<<<<<< HEAD
   agent any
   stages {
     stage('Clone repository') {
       steps {
         checkout scm
       }
+=======
+    agent any
+
+    environment {
+        IMAGE_NAME = 'dushantashev/kiii-Jenkins'
+>>>>>>> 81fda8c (Tret commit)
     }
 
     stage('Build image') {
