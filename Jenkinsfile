@@ -1,42 +1,16 @@
-pipeline {
-<<<<<<< HEAD
-  agent any
-  stages {
+node {
+    def app
     stage('Clone repository') {
-      steps {
         checkout scm
-      }
-=======
-    agent any
-
-    environment {
-        IMAGE_NAME = 'dushantashev/kiii-Jenkins'
->>>>>>> 81fda8c (Tret commit)
     }
-
     stage('Build image') {
-      steps {
-        script {
-          app = docker.build("${IMAGE_NAME}")
-        }
-
-      }
+       app = docker.build("dushantashev/kiii-Jenkins")
     }
-
-    stage('Push image') {
-      steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+    stage('Push image') {   
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
             app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
             app.push("${env.BRANCH_NAME}-latest")
-          }
+            // signal the orchestrator that there is a new version
         }
-
-      }
     }
-
-  }
-  environment {
-    IMAGE_NAME = 'mjovanovik/kiii-jenkins'
-  }
 }
